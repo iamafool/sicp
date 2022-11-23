@@ -1,3 +1,5 @@
+#lang sicp
+
 ;; utility codes
 (define (square x) (* x x))
 
@@ -20,6 +22,33 @@
   (sqrt-iter 1.0 x))
 
 
+;; 2.2.3 Sequences as Conventional Interfaces
+
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+
+(filter odd? (list 1 2 3 4 5))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(accumulate + 0 (list 1 2 3 4 5))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(enumerate-interval 2 7)
+
+#|
 ;; 2.3.2 Example: Symbolic Differentiation
 (define (variable? x) (symbol? x))
 (define (same-variable? v1 v2)
@@ -306,3 +335,4 @@
 	;; more rules can be added here
 	(else (error "unknown expression type - DERIV" exp))))
 
+|#
